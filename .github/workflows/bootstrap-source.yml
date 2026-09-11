@@ -1,0 +1,56 @@
+name: Publicar fonte NAA 7.6.0
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - BOOTSTRAP_TRIGGER
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Baixar pacote preparado
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE_ID="1hiryoI-kCmoDELIBysBR5TJdCUnM5xyx"
+          URL1="https://drive.usercontent.google.com/download?id=${FILE_ID}&export=download&confirm=t"
+          URL2="https://drive.google.com/uc?export=download&id=${FILE_ID}&confirm=t"
+          if ! curl -L --fail --retry 3 --retry-delay 2 "$URL1" -o /tmp/naa-source.zip; then
+            curl -L --fail --retry 3 --retry-delay 2 "$URL2" -o /tmp/naa-source.zip
+          fi
+          test -s /tmp/naa-source.zip
+          unzip -tq /tmp/naa-source.zip
+
+      - name: Extrair o NAA completo
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/naa-unpack
+          mkdir -p /tmp/naa-unpack
+          unzip -q /tmp/naa-source.zip -d /tmp/naa-unpack
+          SRC="/tmp/naa-unpack/NAA_7.6.0_GITHUB_READY"
+          test -f "$SRC/index.html"
+          cp -a "$SRC"/. ./
+          rm -f BOOTSTRAP_TRIGGER
+
+      - name: Publicar no repositório
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "LS System Bot"
+          git config user.email "laudineisantana9@gmail.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração para publicar."
+            exit 0
+          fi
+          git commit -m "Publica NAA 7.6.0 completo com comparação entre modalidades"
+          git push
