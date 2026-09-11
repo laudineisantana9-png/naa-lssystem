@@ -1,0 +1,6 @@
+NAA 7.6.0 · GITHUB READY
+
+Base preservada: NAA 7.5.0 LS Meet.
+Única funcionalidade acrescentada: Comparação entre modalidades em modal independente.
+
+A preparação para GitHub remove somente dados/arquivos de produção que não devem ser publicados (usuários, sessões, mensagens, anexos, transcrições, chaves Push e datasets importados). O código e as funcionalidades permanecem.

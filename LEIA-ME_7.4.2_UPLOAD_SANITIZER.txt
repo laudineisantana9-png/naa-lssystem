@@ -1,0 +1,25 @@
+NAA 7.4.2 — UPLOAD CNCA / ANOS FINAIS CORRIGIDO
+
+Correção principal
+- Os controles de upload de CNCA e Anos Finais agora têm eventos próprios.
+- O seletor de arquivos não depende mais dos bind() das versões antigas do NAA.
+- O botão Salvar também possui handler próprio e mostra "Salvando..." durante a gravação.
+- Os valores visíveis de Segmento, Ano, Ciclo, Tipo de base, Ano escolar e Componente são sincronizados com os parsers legados apenas como dados, sem deixar esses parsers controlarem a interface.
+
+Arquitetura preservada
+- CNCA: Ciclo I / II / III x Município / Escola / Turma / Habilidades.
+- Anos Finais: Ciclo I / II / III x Município / Escola / Turma / Habilidades.
+- Cada slot pode ser aberto, reenviado e excluído individualmente.
+- SABE permanece intacto.
+
+Cache
+- Build 7420.
+- Service Worker naa-v7-4-1-upload-eventos-isolados-20260831.
+- A primeira abertura limpa/desregistra caches antigos sem apagar o IndexedDB dos uploads.
+
+
+CORREÇÃO 7.4.2:
+- Corrigido erro `v731SanitizeRows is not defined` ao salvar CNCA.
+- A rotina de saneamento agora é exposta de forma segura entre as camadas/IIFEs do index.
+- Há fallback seguro para deduplicação caso o saneador ainda não esteja disponível.
+- Nenhum dado já salvo é apagado.

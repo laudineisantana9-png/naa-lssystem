@@ -1,0 +1,35 @@
+NAA 7.0.0 · SUPORTE MYSQL / MARIADB
+===================================
+
+O NAA permanece funcionando normalmente no modo JSON, inclusive para instalações
+já existentes. O suporte SQL foi adicionado sem misturar dados ou tabelas da ASSEC.
+
+ATIVAR SQL
+1. Crie um banco vazio, por exemplo: naa
+2. Importe: /sql/naa.sql
+3. Abra: /config/naa-database.php
+4. Ative "enabled" (ou defina NAA_DB_ENABLED=1 no servidor)
+5. Informe host, porta, banco, usuário e senha pelas variáveis NAA_DB_*.
+
+COMPORTAMENTO
+- Com SQL ativo, as coleções usadas pelas APIs do NAA são persistidas em naa_store.
+- Na primeira leitura, dados JSON existentes são migrados automaticamente para SQL.
+- O espelho JSON permanece ligado por padrão para continuidade/offline e recuperação.
+- Se o MySQL ficar temporariamente indisponível e fallback_json=true, o NAA continua
+  utilizando o espelho JSON em vez de derrubar o painel.
+- Nenhum dado da ASSEC é importado. Apenas o padrão visual/arquitetural foi reutilizado.
+
+VARIÁVEIS DE AMBIENTE
+NAA_DB_ENABLED=1
+NAA_DB_HOST=localhost
+NAA_DB_PORT=3306
+NAA_DB_NAME=naa
+NAA_DB_USER=usuario
+NAA_DB_PASS=senha
+
+TABELAS
+naa_store          Estado operacional das APIs (usuários, datasets, mensagens,
+                   reuniões, eventos, configurações globais etc.)
+naa_configuracoes  Identidade/tema institucional
+naa_auditoria      Base pronta para trilha de auditoria
+naa_importacoes    Base pronta para catálogo de importações

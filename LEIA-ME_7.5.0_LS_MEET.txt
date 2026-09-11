@@ -1,0 +1,11 @@
+NAA 7.5.0 · LS MEET PRONTO PARA TESTE
+
+Correções principais:
+- O botão "Entrar na sala" não depende mais de SpeechRecognition, MediaRecorder ou do provedor de transcrição.
+- A transcrição é iniciada apenas depois que a pessoa entrou, em segundo plano. Se o serviço estiver indisponível, a reunião continua normalmente.
+- O botão de entrada mostra "Entrando…" e é protegido contra duplo clique.
+- Falha/permissão de câmera ou microfone não bloqueia entrada; o usuário pode entrar sem mídia/espectador conforme o servidor.
+- Compartilhamento de tela continua aparecendo somente em navegadores que oferecem getDisplayMedia.
+- Controles foram mantidos visíveis e roláveis em telas estreitas.
+- O servidor já encerra a sala quando o último participante executa a saída; a versão 7.5.0 também inclui limpeza de salas iniciadas que ficaram vazias por desconexão abrupta.
+- Cache atualizado para build 7500.

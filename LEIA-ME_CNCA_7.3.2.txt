@@ -1,0 +1,10 @@
+NAA 7.3.2 — Comparativo CNCA Premium
+
+Alteração principal:
+- A modal "Comparar Ciclos" foi redesenhada em cards premium para Ciclo I, II e III.
+- Cada ciclo mostra, quando disponível: Aprendizado adequado, Defasagem, Intermediário, Participação, Acerto Hxx, entidades, habilidades críticas e quantitativos válidos.
+- A distribuição visual usa as mesmas regras auditadas do dashboard 7.3.1.
+- Tendências são exibidas em pontos percentuais em relação ao ciclo anterior disponível.
+- O botão "Abrir Ciclo" leva diretamente ao ciclo escolhido.
+- Bases não enviadas aparecem como card vazio, sem completar dados de outra fonte.
+- Cache/build atualizado para 7.3.2 / 7320.

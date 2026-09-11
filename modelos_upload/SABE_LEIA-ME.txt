@@ -1,0 +1,52 @@
+MODELO DE UPLOAD - SEGMENTO SABE
+================================
+
+No NAA, abra Uploads e selecione Segmento = SABE.
+O campo Ciclo será fixado automaticamente como "Ciclo Único".
+
+O mesmo importador aceita planilhas consolidadas por ESCOLA e planilhas por TURMA.
+Não é necessário renomear os arquivos.
+
+Colunas reconhecidas:
+- Avaliação
+- Rede
+- Ano Escolar
+- Componente Curricular
+- Estado
+- Regional
+- Município
+- Escola
+- Código da Turma (quando for arquivo por turma)
+- Turma (quando for arquivo por turma)
+- Previstos
+- Avaliados
+- Avaliados (%)
+- Proficiência Média
+- Abaixo do básico
+- Básico
+- Adequado
+- Avançado
+- H 01 (%), H 02 (%), H 03 (%) ...
+
+Componentes detectados:
+- LP = Língua Portuguesa
+- MT = Matemática
+- Língua Portuguesa - Escrita e Leitura
+- Matemática - Escrita e Matemática
+
+Regras de consolidação:
+1. O SABE é armazenado como segmento próprio.
+2. Arquivos do SABE não são somados aos dados do CNCA ou de Anos Finais.
+3. Quando há dados por turma e por escola para o mesmo escola + etapa + componente,
+   a camada por turma é priorizada na análise para impedir dupla contagem.
+4. Em "Todos os componentes", LP e MT objetivas formam a base de consolidação de participação,
+   proficiência e padrões. Relatórios integrados continuam visíveis, mas não duplicam o universo.
+5. Habilidades com até 40% de acerto são destacadas como críticas.
+
+CAMADA POR ITENS (NAA 6.50.0)
+- Exclusiva do segmento SABE; não interfere nos conjuntos CNCA/Anos Finais.
+- Use "Detectar automaticamente" ou "Por itens".
+- O importador reconhece variações de colunas como Item/Questão/Número do Item, Acerto (%)/Percentual de Acerto/% Acerto, Habilidade/Descritor, Escola e Turma.
+- Os itens ficam armazenados em camada própria e não são somados aos consolidados de escola/turma.
+- Se houver uma Hxx vinculada, a modal do item oferece acesso direto à intervenção pedagógica.
+- Exemplo: MODELO_ITENS_SABE.csv

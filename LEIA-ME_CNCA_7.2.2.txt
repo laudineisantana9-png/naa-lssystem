@@ -1,0 +1,12 @@
+NAA 7.2.2 — CORREÇÃO DEFINITIVA DO CNCA POR CICLOS E BASES
+
+1. O problema da 7.2.1 era de ordem de inicialização: o app fazia a primeira renderização antes da camada CNCA 7.2.1 ser registrada. Assim a tela antiga podia permanecer visível.
+2. A 7.2.2 força uma nova renderização somente depois de todas as regras CNCA estarem carregadas.
+3. CNCA continua com 3 ciclos fixos: Ciclo I, Ciclo II e Ciclo III.
+4. Cada ciclo possui 4 bases independentes: Município, Escola, Turma e Habilidades.
+5. O dashboard nunca completa uma base usando outra e não exibe KPI 0 quando o campo não existe na fonte.
+6. Na primeira abertura da 7.2.2, caches NAA e o service worker anterior são removidos; a página recarrega uma vez e limpa o parâmetro de build da URL em seguida.
+7. O .htaccess foi endurecido com no-store/proxy-revalidate/s-maxage=0 e ETag desabilitado.
+8. Um selo v7.2.2 aparece no hero do dashboard CNCA para confirmar visualmente que a versão correta foi carregada.
+
+Não apagar IndexedDB: o limpador atua somente em Cache Storage/Service Worker, preservando os dados importados.

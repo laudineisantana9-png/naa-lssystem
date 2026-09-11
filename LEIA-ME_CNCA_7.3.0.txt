@@ -1,0 +1,16 @@
+NAA 7.3.0 — CORREÇÃO REAL DO CNCA
+
+CAUSA ENCONTRADA:
+As versões 7.2.0/7.2.1/7.2.2 adicionavam o código CNCA depois que o IIFE principal já havia terminado.
+Nesse ponto state, renderDashboard, renderUpload e IndexedDB eram privados ao escopo principal. O navegador gerava ReferenceError e mantinha a tela antiga.
+
+CORREÇÃO:
+- CNCA Município/Escola/Turma/Habilidades é carregado dentro do escopo principal antes de init().
+- 3 ciclos fixos: Ciclo I, Ciclo II, Ciclo III.
+- 4 datasets independentes por ciclo.
+- Sem fallback da tela para dataset legado misturado.
+- Migração automática do conjunto CNCA antigo para camadas identificáveis e exclusão do conjunto combinado.
+- Cache/Service Worker 7300 reiniciado sem apagar IndexedDB.
+- naa-sync.php 7.3 usa SQL quando ativado e JSON como espelho.
+
+O SABE permanece independente e não foi refeito.

@@ -1,0 +1,15 @@
+NAA 6.50.0
+==========
+Pacote integrado do Núcleo de Avaliação da Aprendizagem.
+
+Destaques desta versão:
+- SABE no mesmo dashboard, com Município > Escola > Turma > Habilidades.
+- 396 registros SABE 2025 incorporados (escola + turma), sem dupla contagem.
+- Série histórica automática para novas edições SABE.
+- PDF institucional dinâmico com pré-visualização antes do download.
+- URLs limpas /pagina e atualização de cache por build.
+
+Consulte SABE_INTEGRADO_LEIA-ME.txt para detalhes do segmento SABE.
+
+
+NAA 6.51.0 - correção do PDF SABE: prévia inline usa endpoint direto, fallback local, visualização sem download automático e suporte a Range.

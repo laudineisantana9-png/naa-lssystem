@@ -1,0 +1,21 @@
+# NAA runtime data — never publish production data
+/api/data/*.json
+!/api/data/global_settings.json
+!/api/data/schools.json
+/api/data/datasets/*.json
+/uploads/**/*
+!/uploads/**/.gitkeep
+!/uploads/**/.htaccess
+
+# Local environment / credentials
+.env
+.env.*
+!/api/transcription-config.example.php
+/config/naa-database.local.php
+/api/transcription-config.local.php
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

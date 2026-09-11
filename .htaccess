@@ -1,0 +1,47 @@
+FileETag None
+Options -MultiViews
+DirectoryIndex index.html
+
+<IfModule mod_headers.c>
+  Header unset ETag
+  Header always set Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0, s-maxage=0"
+  Header always set Pragma "no-cache"
+  Header always set Expires "0"
+  Header always set Surrogate-Control "no-store"
+</IfModule>
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 0 seconds"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 0 seconds"
+  ExpiresByType application/javascript "access plus 0 seconds"
+  ExpiresByType application/json "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # URLs limpas no topo do sistema.
+  RewriteCond %{THE_REQUEST} \s/+index\.html(?:[?\s]) [NC]
+  RewriteRule ^index\.html$ /dashboard [R=302,L]
+  RewriteCond %{THE_REQUEST} \s/+cadastro\.html(?:[?\s]) [NC]
+  RewriteRule ^cadastro\.html$ /cadastro [R=302,L]
+
+  # Mantém arquivos, uploads e APIs reais intactos.
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # PDF SABE: prévia e download em URLs limpas.
+  RewriteRule ^pdf/sabe/([a-fA-F0-9]{36})/download/?$ api/sabe-pdf.php?token=$1&download=1 [L,QSA]
+  RewriteRule ^pdf/sabe/([a-fA-F0-9]{36})/?$ api/sabe-pdf.php?token=$1 [L,QSA]
+
+  # Cadastro continua sendo seu próprio arquivo, mas sem extensão.
+  RewriteRule ^cadastro/?$ cadastro.html [L]
+
+  # Todas as páginas do SPA usam /pagina, sem .html/.php e sem querystring visual.
+  RewriteRule ^(?:dashboard|ranking|alunos|mensagens|meet|uploads|usuarios|indicadores|configuracoes)/?$ index.html [L]
+
+  # Fallback de rota limpa para o shell principal.
+  RewriteRule ^[^.]+/?$ index.html [L]
+</IfModule>

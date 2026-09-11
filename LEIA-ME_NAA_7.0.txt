@@ -1,0 +1,47 @@
+NAA 7.0.0 · PADRÃO VISUAL ASSEC + SQL
+=======================================
+
+Esta versão usa a MESMA LINGUAGEM DE INTERFACE do Sistema ASSEC como padrão
+visual da LS System: sidebar completa, cabeçalho/topbar, perfil no menu,
+seções de navegação, tema claro/escuro, botões, cards, modais, responsividade,
+cores configuráveis e radius global.
+
+IMPORTANTE: somente o padrão de interface foi reaproveitado.
+A identidade e o domínio permanecem independentes:
+- NAA = Núcleo de Avaliação da Aprendizagem
+- ASSEC = Associação de Estudantes de Curaçá
+
+Nenhum cadastro, associado, regra financeira ou dado da ASSEC foi copiado para
+o NAA.
+
+NAA 7 mantém:
+- Dashboard municipal e por segmento
+- SABE dentro do mesmo dashboard, com Município/Escola/Turma/Habilidades/Itens
+- Uploads isolados por segmento e ciclo
+- Pódio e Ranking
+- Painel de Alunos
+- Mensagens
+- LS Meet
+- Usuários e permissões
+- Configurações globais
+- PDF SABE dinâmico
+- PWA/offline e URLs limpas
+
+BANCO SQL
+O NAA agora pode persistir as APIs em MySQL/MariaDB mantendo espelho JSON.
+Veja SQL_LEIA-ME.txt e sql/naa.sql.
+
+TEMA PADRÃO ASSEC
+Primária: #0066CC
+Secundária: #00D4AA
+Radius: 12px
+Claro/Escuro disponíveis na mesma arquitetura.
+
+NAA 7.0.3 — CORREÇÃO DE UPLOAD E SINCRONIZAÇÃO
+- O ano de referência é lido do conteúdo da avaliação (ex.: SABE 2025), não da data presente no nome do arquivo.
+- Uploads SABE, CNCA e Anos Finais permanecem isolados por segmento/ano/ciclo.
+- A importação só é considerada concluída depois de gravar e reler o conjunto no IndexedDB.
+- O servidor passou a mesclar escola/turma/habilidade/item/aluno por chave, evitando que outro dispositivo ou perfil apague dados já enviados.
+- Upload SABE anteriormente salvo no ano errado é migrado automaticamente quando o campo assessment identifica uma única edição SABE.
+- Após sincronizar, o navegador usa imediatamente o conjunto retornado pelo servidor.
+- Cache atualizado para 7.0.3.

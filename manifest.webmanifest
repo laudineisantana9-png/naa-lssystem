@@ -1,0 +1,22 @@
+{
+  "name": "NAA — Núcleo de Avaliação da Aprendizagem",
+  "short_name": "NAA",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f0f2f5",
+  "theme_color": "#0066CC",
+  "description": "Núcleo de Avaliação da Aprendizagem",
+  "icons": [
+    {
+      "src": "./naa-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./naa-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

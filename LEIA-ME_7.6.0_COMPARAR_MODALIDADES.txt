@@ -1,0 +1,14 @@
+NAA 7.6.0 · COMPARAÇÃO ENTRE MODALIDADES
+
+Esta versão preserva o NAA 7.5.0 e acrescenta somente uma janela independente de comparação entre modalidades.
+
+Atalho: ícone Comparar modalidades no cabeçalho.
+
+Comparações preparadas:
+- SABE 2025 · 2º ano × CNCA 2026 · 3º ano (Ciclo I, II ou III).
+- SABE 2025 · 5º ano × Anos Finais 2026 · 6º ano (Ciclo I, II ou III).
+- SABE 2025 · 9º ano × Anos Finais 2026 · 9º ano (comparação de etapa, não da mesma coorte).
+
+A modal permite escolher a fonte Município/Escola/Turma e o componente Língua Portuguesa/Leitura, Matemática ou síntese dos dois.
+
+Os instrumentos possuem escalas próprias. Por isso, participação e faixas pedagógicas são mostradas de forma harmonizada, mas Proficiência SABE e Acerto CNCA/Anos Finais são exibidos sem calcular diferença entre escalas distintas.

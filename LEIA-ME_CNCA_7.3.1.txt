@@ -1,0 +1,39 @@
+NAA 7.3.1 — AUDITORIA DE CÁLCULOS CNCA
+25/08/2026
+
+Correções principais:
+1. Percentuais nunca são somados como quantidades.
+   A coluna "Avaliados (%)" não pode alimentar o campo numérico "Avaliados".
+2. Previsto/Avaliado só entra no cálculo quando forma um par válido:
+   previsto > 0, avaliado >= 0 e avaliado <= previsto.
+3. Ao visualizar TODOS OS COMPONENTES, os quantitativos usam apenas um
+   componente de referência com maior cobertura. Nunca somam Escrita + Fluência
+   + Leitura + Matemática como se fossem estudantes diferentes.
+4. A participação geral é uma média das taxas dos componentes, sempre entre
+   0% e 100%, sem somar percentuais de turmas/componentes.
+5. Defasagem/Adequado são consolidados por componente pedagógico antes da
+   média geral, reduzindo duplicação por volume desigual de linhas.
+6. Componentes são normalizados para: Escrita, Fluência, Leitura, Matemática
+   e Ciências da Natureza. O rótulo genérico "Componente" não aparece mais.
+7. Reupload de um slot CNCA (Ciclo + Município/Escola/Turma/Habilidades)
+   SUBSTITUI somente aquele card. Não faz merge com resíduos de parser antigo.
+8. O servidor/SQL também substitui o snapshot daquele slot em vez de mesclar
+   linhas antigas, evitando que dados corrompidos retornem após sincronizar.
+9. Cache atualizado para build 7310.
+
+Auditoria realizada sobre Turmas(1).zip enviado pelo usuário:
+- 779 linhas de origem
+- 166 turmas únicas (escola + turma)
+- Leitura: acerto médio ~67,95%; participação ~96,27%
+- Matemática: acerto médio ~70,06%; participação ~96,20%
+- Escrita: nota média ~6,18; 2.405 previstos / 2.337 avaliados (~97,17%)
+- Fluência: 2.406 previstos / 2.341 avaliados (~97,30%)
+- Participação média dos quatro componentes: ~96,73%
+
+O painel nunca deve exibir participação acima de 100% ou avaliados acima de previstos.
+
+AUTO-REPARO:
+Ao abrir a 7.3.1, o navegador revisa as bases CNCA independentes já salvas.
+Linhas antigas com componente genérico, participação fora da faixa ou
+"Avaliados (%)" tratado como quantidade são saneadas localmente e reenviadas
+para o mesmo slot no servidor/SQL. O SABE e os outros slots não são alterados.

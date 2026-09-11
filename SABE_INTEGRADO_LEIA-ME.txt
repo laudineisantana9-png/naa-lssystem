@@ -1,0 +1,62 @@
+NAA 6.50.0 - SABE INTEGRADO PREMIUM
+===================================
+
+ARQUITETURA
+- SABE permanece no mesmo index.html, no mesmo dashboard, menu e sistema de uploads.
+- Ao selecionar o segmento SABE, o dashboard troca metodologia e visual sem abrir uma página separada.
+- Ciclo SABE: sempre "Ciclo Único".
+
+CAMADAS SABE
+1. Município (consolidado da rede)
+2. Escola
+3. Turma
+4. Habilidades
+
+PLANILHAS POR TURMA
+- Estrutura reconhecida: Avaliação, Rede, Ano Escolar, Componente Curricular, Município, Escola,
+  Código da Turma, Turma, Previstos, Avaliados, Avaliados (%), Proficiência Média,
+  Abaixo do básico, Básico, Adequado, Avançado e H xx (%).
+- A camada por turma tem prioridade quando existe para a mesma escola + etapa + componente,
+  evitando somar novamente a planilha consolidada por escola.
+- Base incorporada v6.50.0: 144 registros por escola + 252 registros por turma = 396 registros SABE.
+
+SÉRIE HISTÓRICA
+- O seletor Avaliação mostra SABE 2023, 2024, 2025 etc. conforme os anos forem importados.
+- Os cards comparam participação, proficiência e padrões entre as edições disponíveis.
+- Proficiência não é misturada entre 2º, 5º e 9º anos porque as escalas são diferentes; selecione a etapa.
+
+PDF DINÂMICO
+- "Ver PDF atualizado" gera o PDF atual, envia a prévia ao servidor quando online e abre em modo inline dentro do sistema; não baixa automaticamente.
+- URL limpa da prévia: /pdf/sabe/{token}. Offline, o sistema usa a mesma prévia local como fallback.
+- O download só acontece ao clicar em "Baixar PDF" na prévia.
+- PDF textual e vetorial, A4, com tabelas reais, cabeçalho institucional, logos Prefeitura/NAA,
+  marca d'água grande do Núcleo e rodapé no padrão institucional LS System/CEO/paginação.
+- Estrutura preparada para série histórica, IRC, indicadores contextuais, prioridades, metas,
+  intervenção municipal, risco educacional e monitoramento.
+- Dados ainda não anexados aparecem como N/D; nenhuma informação é inventada.
+
+URLS LIMPAS
+- /dashboard, /ranking, /alunos, /mensagens, /meet, /uploads, /usuarios,
+  /indicadores e /configuracoes.
+- .htaccess mantém APIs e arquivos reais intactos e direciona as rotas do SPA ao index.html.
+
+CACHE
+- Build 6.50.0 usa novo Cache Storage e elimina caches NAA anteriores na troca de versão.
+- HTML/JS/JSON são publicados com no-store; Service Worker usa network-first e fallback offline.
+
+
+NAA 6.50.0 — SABE PREMIUM INTERATIVO
+- Adicionada camada SABE "Por itens", isolada dos uploads CNCA/Anos Finais.
+- Detecção automática de arquivos por item/questão com percentual de acerto.
+- Itens persistem em propriedade própria do conjunto SABE; não entram em somas de escola/turma.
+- Nova visão Itens no painel SABE.
+- Cards, KPIs, histórico, padrões, escolas, turmas e itens clicáveis.
+- Modais do sistema abrem detalhamento e permitem acessar intervenções das habilidades Hxx.
+- PDF dinâmico preparado para incluir tabela real de itens quando essa fonte estiver importada.
+- Cache elevado para 6.50.0 e Service Worker força shell/arquivos novos.
+
+
+6.51.0: corrigida a prévia PDF para funcionar mesmo sem mod_rewrite/.htaccess. O navegador visualiza primeiro e só baixa por ação explícita.
+
+
+6.52.0: corrigido contrato do módulo PDF. NaaSabePDF agora publica build() e open(); index possui fallback para build(); cache atualizado.

@@ -1,0 +1,21 @@
+NAA 7.4.0 — CICLOS E CAMADAS INDEPENDENTES
+
+1. CNCA / Anos Iniciais
+   - Ciclo I, Ciclo II e Ciclo III podem ser escolhidos livremente no upload.
+   - A escolha do ciclo do upload não é mais herdada/alterada pelo ciclo aberto no dashboard.
+   - Em cada ciclo: Município, Escola, Turma e Habilidades são quatro slots independentes.
+   - Cada upload pode ser excluído individualmente.
+
+2. Anos Finais
+   - Mesma arquitetura: Ciclo I, II, III × Município, Escola, Turma, Habilidades.
+   - Cada modalidade é salva em dataset próprio e não completa outra modalidade.
+   - Reenvio substitui somente o slot escolhido.
+   - Cada upload pode ser excluído individualmente.
+
+3. SQL / servidor
+   - naa-sync.php trata Anos Iniciais e Anos Finais como snapshots independentes.
+   - Conjuntos legados de Anos Finais são separados automaticamente quando possível.
+
+4. Cache
+   - Build 7400 / Service Worker novo.
+   - Cache antigo é invalidado sem apagar IndexedDB.

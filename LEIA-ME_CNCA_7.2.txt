@@ -1,0 +1,23 @@
+NAA 7.2.0 — CNCA EM CAMADAS INDEPENDENTES
+
+O SABE permanece com sua arquitetura independente já existente.
+
+CNCA / Anos Iniciais agora possui quatro uploads separados:
+- Município
+- Escola
+- Turma
+- Habilidades
+
+O Dashboard CNCA possui o seletor “Exibir painel por” com as mesmas quatro opções.
+Cada visão consulta somente a base correspondente e não cria cards de componentes sem dados.
+
+Estruturas analisadas nesta versão:
+- HABILIDADE_DESEMPENHO_MUNICIPIO / DOCUMENTO_DOWNLOAD_MUNICÍPIO
+- HABILIDADE_DESEMPENHO_ESCOLA / DOCUMENTO_DOWNLOAD_ESCOLA
+- HABILIDADE_DESEMPENHO_TURMA / DOCUMENTO_DOWNLOAD_TURMA
+- DADOS_ACERTO_POR_HABILIDADE
+
+As quatro camadas possuem IDs distintos no IndexedDB/sincronização e não substituem umas às outras.
+Dados CNCA antigos são preservados. Uma migração compatível copia o que puder ser identificado para as novas camadas sem apagar o legado.
+
+LS System

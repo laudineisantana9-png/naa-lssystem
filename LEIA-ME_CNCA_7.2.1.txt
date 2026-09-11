@@ -1,0 +1,14 @@
+NAA 7.2.1 — CNCA estritamente independente por Ciclo e Tipo de Base
+
+Correções principais:
+- CNCA possui três ciclos fixos: Ciclo I, Ciclo II e Ciclo III.
+- Cada ciclo possui quatro bases separadas: Município, Escola, Turma e Habilidades.
+- Cada combinação Ciclo + Base é um conjunto próprio no IndexedDB/sincronização.
+- O dashboard consulta exclusivamente a base selecionada.
+- Não existe fallback automático para dados de outro tipo de base.
+- KPIs sem dados de origem não aparecem como zero.
+- Estudantes previstos/avaliados só aparecem quando a planilha daquela fonte fornece quantitativos.
+- Quando a fonte fornece apenas Avaliados (%), o painel usa participação sem inventar quantitativos.
+- Cards de Município/Escola/Turma/Habilidades mostram o estado de cada fonte no ciclo atual.
+- Upload exibe Ciclo I, II e III em cards, com quatro slots independentes por ciclo.
+- SABE não foi alterado.
