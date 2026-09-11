@@ -124,7 +124,8 @@ openSabePdf=async function(){
     let url=localUrl,downloadUrl=localUrl;
     if(navigator.onLine){
       try{
-        const endpoint=sabeAppUrl('api/sabe-pdf.php');
+        if(window.NAA_STANDALONE)return {ok:true,url:URL.createObjectURL(blob),name,blob,standalone:true};
+        const endpoint=(window.naaApiUrl?window.naaApiUrl('sabe-pdf.php'):sabeAppUrl('api/sabe-pdf.php'));
         const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/pdf','Accept':'application/json','X-PDF-Name':name},body:blob,credentials:'same-origin',cache:'no-store'});
         const j=await r.json().catch(()=>null);
         if(r.ok&&j?.ok&&j.token){

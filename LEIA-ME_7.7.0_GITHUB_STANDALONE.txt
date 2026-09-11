@@ -1,0 +1,9 @@
+NAA 7.7.0 · GITHUB STANDALONE
+
+- Sem PHP, SQL ou naa.lssystem.com.br.
+- Login e usuários: localStorage + PBKDF2/SHA-256.
+- Datasets/uploads: IndexedDB.
+- Mensagens, avisos e LS Meet: funcionamento local no mesmo navegador/origem.
+- PWA/service worker: cache estático e offline.
+- Primeiro login em um navegador novo cria o Administrador Local com as credenciais informadas.
+- GitHub Pages não oferece banco/servidor central; portanto não há sincronização automática entre dispositivos diferentes.

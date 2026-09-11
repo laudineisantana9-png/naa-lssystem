@@ -1,12 +1,12 @@
 {
   "name": "NAA — Núcleo de Avaliação da Aprendizagem",
   "short_name": "NAA",
-  "start_url": "/dashboard",
-  "scope": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#f0f2f5",
   "theme_color": "#0066CC",
-  "description": "Núcleo de Avaliação da Aprendizagem",
+  "description": "NAA Standalone — Núcleo de Avaliação da Aprendizagem, PWA local sem PHP.",
   "icons": [
     {
       "src": "./naa-icon-192.png",
@@ -18,5 +18,6 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "id": "./"
 }
