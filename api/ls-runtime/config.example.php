@@ -9,8 +9,10 @@ return [
     'pass' => getenv('NAA_DB_PASS') ?: '',
     'charset' => 'utf8mb4'
   ],
-  // SEGURO POR PADRÃO: nunca deixe sincronização pública em produção.
-  // Integre com a sessão/token do NAA ou defina um Bearer token forte.
+  // Nunca deixe sincronização pública em produção.
   'allow_public_sync' => false,
+  // O Runtime reutiliza a sessão autenticada normal do NAA.
+  'auth_mode' => getenv('LS_RUNTIME_AUTH_MODE') ?: 'naa_session',
+  // Usado somente se auth_mode for bearer_sha256.
   'bearer_token_sha256' => getenv('LS_RUNTIME_BEARER_SHA256') ?: ''
 ];
