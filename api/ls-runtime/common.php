@@ -4,10 +4,25 @@ function ls_cfg(): array { static $c; if($c)return $c; $f=__DIR__.'/config.php';
 function ls_json(array $d,int $s=200): never { http_response_code($s); header('Content-Type: application/json; charset=utf-8'); header('Cache-Control: no-store'); echo json_encode($d,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES); exit; }
 function ls_input(): array { $raw=file_get_contents('php://input'); $d=$raw!==''?json_decode($raw,true):[]; return is_array($d)?$d:[]; }
 function ls_pdo(): PDO { static $p; if($p)return $p; $c=ls_cfg()['db']; $dsn='mysql:host='.$c['host'].';port='.(int)$c['port'].';dbname='.$c['name'].';charset='.($c['charset']??'utf8mb4'); return $p=new PDO($dsn,$c['user'],$c['pass'],[PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION,PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC,PDO::ATTR_EMULATE_PREPARES=>false]); }
-function ls_auth(): void { $c=ls_cfg(); if(!empty($c['allow_public_sync']))return; $h=$_SERVER['HTTP_AUTHORIZATION']??''; if(!preg_match('/^Bearer\s+(.+)$/i',$h,$m))ls_json(['ok'=>false,'error'=>'Autorização LS Sync necessária.'],401); $want=(string)($c['bearer_token_sha256']??''); if($want===''||!hash_equals($want,hash('sha256',$m[1])))ls_json(['ok'=>false,'error'=>'Token LS Sync inválido.'],403); }
+function ls_auth(): void {
+  $c=ls_cfg(); if(!empty($c['allow_public_sync']))return;
+  $h=$_SERVER['HTTP_AUTHORIZATION']??''; if(!preg_match('/^Bearer\s+(.+)$/i',$h,$m))ls_json(['ok'=>false,'error'=>'Autorização LS Sync necessária.'],401);
+  $token=(string)$m[1]; $mode=(string)($c['auth_mode']??'bearer_sha256');
+  if($mode==='naa_session'){
+    $lib=dirname(__DIR__).'/naa-lib.php'; if(!is_file($lib))ls_json(['ok'=>false,'error'=>'Integração NAA indisponível.'],500); require_once $lib;
+    $hash=hash('sha256',$token); $valid=false;
+    foreach(naa_read('sessions') as $session){
+      if(!hash_equals((string)($session['tokenHash']??''),$hash))continue;
+      if(strtotime((string)($session['expiresAt']??''))<time())break;
+      $u=naa_find_user((string)($session['userId']??'')); if($u&&($u['active']??true)!==false){$valid=true;break;}
+    }
+    if(!$valid)ls_json(['ok'=>false,'error'=>'Sessão NAA inválida ou expirada.'],403); return;
+  }
+  $want=(string)($c['bearer_token_sha256']??''); if($want===''||!hash_equals($want,hash('sha256',$token)))ls_json(['ok'=>false,'error'=>'Token LS Sync inválido.'],403);
+}
 function ls_app_id(array $in=[]): string { $v=(string)($in['app_id']??$_GET['app_id']??($_SERVER['HTTP_X_LS_APP_ID']??'')); $expected=(string)(ls_cfg()['app_id']??''); if($v===''||$expected===''||!hash_equals($expected,$v))ls_json(['ok'=>false,'error'=>'app_id não autorizado.'],403); return $v; }
 function ls_device(array $in=[]): string { $v=preg_replace('/[^a-zA-Z0-9._:-]/','',(string)($in['device_id']??$_GET['device_id']??'')); if($v==='')ls_json(['ok'=>false,'error'=>'device_id ausente.'],422); return $v; }
-function ls_boot_schema(PDO $p): void { $sqlFile=dirname(__DIR__,2).'/sql/ls_runtime.sql'; if(!is_file($sqlFile))return; $sql=file_get_contents($sqlFile); if($sql!==false&&trim($sql)!=='')$p->exec($sql); }
+function ls_boot_schema(PDO $p): void { $sql=file_get_contents(dirname(__DIR__).'/sql/ls_runtime.sql'); if($sql!==false)$p->exec($sql); }
 function ls_touch_device(PDO $p,string $app,string $device): void { $s=$p->prepare('INSERT INTO ls_runtime_devices(app_id,device_id,first_seen,last_seen) VALUES(?,?,UTC_TIMESTAMP(),UTC_TIMESTAMP()) ON DUPLICATE KEY UPDATE last_seen=UTC_TIMESTAMP()');$s->execute([$app,$device]); }
 function ls_cursor(PDO $p,string $app): string { $s=$p->prepare('SELECT COALESCE(MAX(seq),0) FROM ls_runtime_changes WHERE app_id=?');$s->execute([$app]);return (string)$s->fetchColumn(); }
 function ls_change_row(array $r): array { return ['entity'=>$r['entity'],'record_id'=>$r['record_id'],'operation'=>$r['operation'],'data'=>$r['data_json']?json_decode($r['data_json'],true):null,'version'=>(string)$r['version'],'updated_at'=>$r['updated_at'],'deleted'=>$r['operation']==='delete']; }
