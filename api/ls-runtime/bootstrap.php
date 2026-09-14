@@ -1,0 +1,3 @@
+<?php
+declare(strict_types=1); require __DIR__.'/common.php'; ls_auth(); $in=ls_input();$app=ls_app_id($in);$device=ls_device($in);$p=ls_pdo();ls_boot_schema($p);ls_touch_device($p,$app,$device);
+$s=$p->prepare('SELECT entity,record_id,data_json,version,updated_at,deleted FROM ls_runtime_records WHERE app_id=?');$s->execute([$app]);$changes=[];foreach($s as $r)$changes[]=['entity'=>$r['entity'],'record_id'=>$r['record_id'],'operation'=>$r['deleted']?'delete':'upsert','data'=>$r['data_json']?json_decode($r['data_json'],true):null,'version'=>(string)$r['version'],'updated_at'=>$r['updated_at'],'deleted'=>(bool)$r['deleted']];ls_json(['ok'=>true,'changes'=>$changes,'cursor'=>ls_cursor($p,$app)]);
