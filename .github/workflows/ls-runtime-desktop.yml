@@ -1,0 +1,64 @@
+name: Build LS Runtime Desktop
+
+on:
+  push:
+    branches: [ls-runtime-desktop-build]
+    paths:
+      - 'ls-runtime-desktop-source.zip.b64'
+      - '.github/workflows/ls-runtime-desktop.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-14]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Extract LS Runtime source
+        shell: bash
+        run: |
+          python -c "import base64,zipfile,pathlib; p=pathlib.Path('ls-runtime-desktop-source.zip.b64'); z=pathlib.Path('ls-runtime-desktop-source.zip'); z.write_bytes(base64.b64decode(p.read_text())); zipfile.ZipFile(z).extractall('.')"
+
+      - name: Install dependencies
+        working-directory: ls-runtime-desktop
+        run: npm install
+
+      - name: Build Windows
+        if: runner.os == 'Windows'
+        working-directory: ls-runtime-desktop
+        run: npm run dist:win
+
+      - name: Build macOS Universal
+        if: runner.os == 'macOS'
+        working-directory: ls-runtime-desktop
+        run: npm run dist:mac
+
+      - name: Upload Windows artifacts
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: LS-Runtime-Windows
+          path: |
+            ls-runtime-desktop/dist/*.exe
+            ls-runtime-desktop/dist/*.yml
+          if-no-files-found: error
+
+      - name: Upload macOS artifacts
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: LS-Runtime-macOS
+          path: |
+            ls-runtime-desktop/dist/*.dmg
+            ls-runtime-desktop/dist/*.zip
+          if-no-files-found: error
