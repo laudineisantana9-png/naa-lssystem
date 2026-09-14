@@ -1,0 +1,2 @@
+<?php
+declare(strict_types=1); require __DIR__.'/common.php'; ls_auth();$app=ls_app_id();$device=ls_device();$cursor=max(0,(int)($_GET['cursor']??0));$p=ls_pdo();ls_boot_schema($p);ls_touch_device($p,$app,$device);$s=$p->prepare('SELECT seq,entity,record_id,operation,data_json,version,updated_at FROM ls_runtime_changes WHERE app_id=? AND seq>? ORDER BY seq ASC LIMIT 1000');$s->execute([$app,$cursor]);$changes=[];$last=$cursor;foreach($s as $r){$last=max($last,(int)$r['seq']);$changes[]=ls_change_row($r);}ls_json(['ok'=>true,'changes'=>$changes,'cursor'=>(string)$last]);
