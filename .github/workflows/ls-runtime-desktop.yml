@@ -4,7 +4,7 @@ on:
   push:
     branches: [ls-runtime-desktop-build]
     paths:
-      - 'ls-runtime-desktop-source.zip.b64'
+      - 'ls-runtime-parts/**'
       - '.github/workflows/ls-runtime-desktop.yml'
   workflow_dispatch:
 
@@ -15,6 +15,8 @@ jobs:
       matrix:
         os: [windows-latest, macos-14]
     runs-on: ${{ matrix.os }}
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,10 +26,10 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Extract LS Runtime source
+      - name: Rebuild and verify LS Runtime source
         shell: bash
         run: |
-          python -c "import base64,zipfile,pathlib; p=pathlib.Path('ls-runtime-desktop-source.zip.b64'); z=pathlib.Path('ls-runtime-desktop-source.zip'); z.write_bytes(base64.b64decode(p.read_text())); zipfile.ZipFile(z).extractall('.')"
+          python -c "import base64,hashlib,zipfile,pathlib; parts=sorted(pathlib.Path('ls-runtime-parts').glob('part-*.txt')); data=''.join(p.read_text() for p in parts); raw=base64.b64decode(data); expected='853e7e9949ed479595cc181b020037fa602f3a8d7b90ff20dd640f91457a34da'; actual=hashlib.sha256(raw).hexdigest(); print('parts=',len(parts),'bytes=',len(raw),'sha256=',actual); assert actual==expected, f'SHA256 mismatch: {actual}'; z=pathlib.Path('ls-runtime-desktop-source.zip'); z.write_bytes(raw); zipfile.ZipFile(z).testzip() is None or (_ for _ in ()).throw(RuntimeError('ZIP CRC failed')); zipfile.ZipFile(z).extractall('.')"
 
       - name: Install dependencies
         working-directory: ls-runtime-desktop
